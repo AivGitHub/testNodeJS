@@ -1,0 +1,82 @@
+.container
+
+  .panel-group
+    .panel.panel-default
+      a(href='/departments/')
+        .panel-body Departments
+    .panel.panel-default.active
+      a(href='/employees/')
+        .panel-body Employees
+    .panel.panel-default
+      button.btn.btn-primary.widthOP(type='button', data-toggle='modal', data-target='#postModal')
+        | add employee
+
+
+  .starter-template
+    .list-group
+      | Employees
+
+      -for result in results
+        span.list-group-item
+          span
+             | personId = #{result.personId}, 
+             | departmentId = #{result.departmentId}, 
+             | name = '#{result.firstName}',
+             | last name = '#{result.lastName}'.
+          form(method='post',class='float-right',action='/employees/' + result.personId)
+            input(type='hidden', name='_method', value='delete')
+            button
+              span.glyphicon.glyphicon-remove
+          button.float-right(type='button', data-toggle='modal', data-target='#updateModal-#{result.personId}')
+            span.glyphicon.glyphicon-edit
+
+          .modal.fade(id='updateModal-#{result.personId}', tabindex='-1', role='dialog', aria-labelledby='ModalUpdate', aria-hidden='true')
+            .modal-dialog(role='document')
+              .modal-content
+                .modal-header
+                  h5#ModalUpdate.modal-title update employee
+                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                .modal-body
+                  form(method='post',action='/employees/')
+                    input(type='hidden', name='_method', value='put')
+                    input(type='hidden', name='personId', value='#{result.personId}')
+                    div.form-group
+                      label departmentId
+                      input.form-control(type='text', name='departmentId', value='' + result.departmentId + '')
+                    div.form-group
+                      label name
+                      input.form-control(type='text', name='name', value='' + result.firstName + '')
+                    div.form-group
+                      label last name
+                      input.form-control(type='text', name='lastName', value='' + result.lastName + '')
+                    button.btn.btn-primary update
+            
+                .modal-footer
+                  button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+
+
+  #postModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ModalPost', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#ModalPost.modal-title add employee
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body
+          form(method='post',action='/employees/')
+            input(type='hidden', name='_method', value='post')
+            div.form-group
+              label department id
+              input.form-control(type='text', name='departmentId')
+            div.form-group
+              label name
+              input.form-control(type='text', name='name')
+            div.form-group
+              label last name
+              input.form-control(type='text', name='lastName')
+            button.btn.btn-primary add
+            
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+

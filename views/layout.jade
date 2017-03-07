@@ -1,0 +1,30 @@
+!!!
+html
+  head
+    title='TestAppNodeJS'
+    link(rel='stylesheet', href='/stylesheets/aristo/jquery-ui-1.8.5.custom.css')
+    link(rel='stylesheet', href='/bootstrap-3.3.7-dist/css/bootstrap.min.css')
+    script(type='text/javascript', src='/javascripts/json.js')
+    script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')
+    script(type='text/javascript', src='/bootstrap-3.3.7-dist/js/bootstrap.min.js')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    #container
+      .navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+        .container
+          .navbar-header
+            a.navbar-brand(href='/') #{nameAndVersion(appName, version)}
+
+      !{flashMessages}
+      != body
+    script(type='text/javascript', src='/javascripts/flash.js')
+    - if (typeof documents !== 'undefined')
+      script(type='text/javascript', src='/javascripts/resize.js')
+      script(type='text/javascript', src='/javascripts/utils.js')
+      script(type='text/javascript')
+        $(function() {
+          if (typeof Documents !== 'undefined')
+            Documents.reset(!{JSON.stringify(documents)});
+        });
+    

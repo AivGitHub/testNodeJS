@@ -1,0 +1,69 @@
+.container
+
+  .panel-group
+    .panel.panel-default.active
+      a(href='/departments/')
+        .panel-body Departments
+    .panel.panel-default
+      a(href='/employees/')
+        .panel-body Employees
+    .panel.panel-default
+      button.btn.btn-primary.widthOP(type='button', data-toggle='modal', data-target='#exampleModal')
+        | add department
+  .starter-template
+    .list-group
+      | Departments
+      -for result in results
+        span.list-group-item
+          span
+             | #{result.departmentId}. 
+             | name = '#{result.name}',
+             | description = '#{result.description}'.
+          form(method='post',class='float-right',action='/departments/' + result.departmentId)
+            input(type='hidden', name='_method', value='delete')
+            button
+              span.glyphicon.glyphicon-remove
+          button.float-right(type='button', data-toggle='modal', data-target='#updateModal-#{result.departmentId}')
+            span.glyphicon.glyphicon-edit
+          .modal.fade(id='updateModal-#{result.departmentId}', tabindex='-1', role='dialog', aria-labelledby='ModalUpdate', aria-hidden='true')
+            .modal-dialog(role='document')
+              .modal-content
+                .modal-header
+                  h5#ModalUpdate.modal-title update department
+                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                .modal-body
+                  form(method='post',action='/departments/')
+                    input(type='hidden', name='_method', value='put')
+                    input(type='hidden', name='departmentId', value='#{result.departmentId}')
+                    div.form-group
+                      label name
+                      input.form-control(type='text', name='name', value='' + result.name + '')
+                    div.form-group
+                      label description
+                      input.form-control(type='text', name='description', value='' + result.description + '')
+                    button.btn.btn-primary update
+            
+                .modal-footer
+                  button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+
+  #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ModalPost', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#ModalPost.modal-title add department
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body
+          form(method='post',action='/departments/')
+            input(type='hidden', name='_method', value='post')
+            div.form-group
+              label(for='exampleInputEmail1') name
+              input.form-control(type='text', name='name')
+            div.form-group
+              label(for='exampleInputEmail1') description
+              input.form-control(type='text', name='description')
+            button.btn.btn-primary add
+            
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Close
